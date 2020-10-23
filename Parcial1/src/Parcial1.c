@@ -233,11 +233,18 @@ int main(void) {
 
 				resultadoPrintElectro = printElectro(arrayElectro, marcas, MAX);
 				if (resultadoPrintElectro != 0) {
-					printf("\nError mostrando los empleados.\n");
+					printf("\nError mostrando los electrodomesticos.\n");
 					system("pause");
 				}
 				system("pause");
 				}
+				else
+				{
+					printf("\nDebe cargar algun electrodomestico antes de listar. \n");
+					system("pause");
+				}
+
+
 				break;
 
 
