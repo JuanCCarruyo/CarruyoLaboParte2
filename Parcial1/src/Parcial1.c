@@ -224,6 +224,7 @@ int main(void) {
 				break;
 			case 4: //LISTAR ELECTRODOMESTICO
 
+				if(flagAltaElectro == 1){
 				resultadoSortElectro = sortElectro(arrayElectro, MAX, 1);
 				if (resultadoSortElectro != 0) {
 					printf("\nError en el ordenamiento.\n");
@@ -236,6 +237,7 @@ int main(void) {
 					system("pause");
 				}
 				system("pause");
+				}
 				break;
 
 
@@ -312,6 +314,7 @@ int main(void) {
 				else
 				{
 					printf("\nDebe cargar algun electrodomestico antes de hacer una reparacion. \n");
+					system("pause");
 				}
 
 				break;
