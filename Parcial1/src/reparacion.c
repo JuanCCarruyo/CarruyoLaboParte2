@@ -10,20 +10,15 @@
 #include <string.h>
 #include <ctype.h>
 
-#include "reparacion.h"
-#include "electrodomestico.h"
-#include "servicio.h"
 #include "utnInputs.h"
-#include "marca.h"
-#include "fecha.h"
-#include "cliente.h"
+#include "reparacion.h"
 
 
 void harcodeoReparacion(Reparacion *pArray,int limite)
 {
 	int i;
 	int id[5]={1,2,3,4,5};
-	int serie[5]={20321,69696,40203,20003,20002};
+	int serie[5]={20321,69696,42003,20003,20002};
 	int idCliente[5]={4,3,3,4,2};
 	int idServicio[5]={20001,20001,20000,20003,20002};
 	eFecha fecha[]={{1,25,8,2020},{2,13,2,2019},{3,11,9,2001},{4,20,4,2020},{5,4,8,1997}};
@@ -263,3 +258,197 @@ int contadoresClientes(Reparacion *pArray, Cliente *pCliente, int limite, int *c
 
 	return retorno;
 }
+
+int Informe3(Reparacion *pArray, Electro *pElectro, Servicio *pServicio, Cliente *pCliente, Reparacion *pRepElec, int limite)
+{
+	int retorno = -1;
+	int i;
+	int inputIDElectro;
+	int resultadoPrintRep;
+
+
+	getInt(&inputIDElectro, "\nIngrese el ID del Electrodomestico: ",
+			"\nERROR: Ingrese un ID valido", 1, limite, 10);
+
+	for (i = 0; i < limite; i++)
+	{
+		if(pElectro[i].id == inputIDElectro && pElectro[i].isEmpty == 0)
+		{
+			pRepElec[i].id = pArray[i].id;
+			pRepElec[i].serie = pArray[i].serie;
+			pRepElec[i].idCliente = pArray[i].idCliente;
+			pRepElec[i].idServicio = pArray[i].idServicio;
+			pRepElec[i].fecha = pArray[i].fecha;
+			pRepElec[i].isEmpty = pArray[i].isEmpty;
+			retorno = 0;
+		}
+	}
+
+	resultadoPrintRep = printRep(pRepElec, pCliente, pServicio, limite);
+	if (resultadoPrintRep != 0) {
+		printf("\nError mostrando los electrodomesticos.\n");
+		system("pause");
+	}
+
+	initRep(pRepElec, limite);
+	system("pause");
+
+
+
+
+
+	return retorno;
+}
+
+int InformeTotalRep(Reparacion *pArray, Electro *pElectro, Servicio *pServicio, Reparacion *pInformeTotalRep, int limite)
+{
+	int retorno = -1;
+	int i;
+	int inputElectro;
+	int acumPrecio=0;
+	int resElectrobyID;
+	int flagError=0;
+
+	int servs=0;
+	int ser=0;
+
+
+	getInt(&inputElectro, "\nIngrese el ID del electrodomestico: ",
+			"\nERROR: Ingrese un ID valido", 1, limite, 10);
+
+	resElectrobyID = findElectroById(pElectro, limite, inputElectro);
+	if(resElectrobyID == -1)
+	{
+		flagError = 1;
+		printf("\nNo hay electrodomestico con ese ID");
+		system("pause");
+
+	}
+	ser = pElectro[resElectrobyID].serie;
+
+	for (i = 0; i < limite; i++)
+	{
+
+
+		if(pArray[i].serie == ser)
+		{
+			servs = pArray[i].idServicio;
+		}
+
+		printf("\nServs: %d",pArray[i].serie);
+
+		switch(servs)
+		{
+		case 20000:
+			acumPrecio = acumPrecio + 250;
+
+			break;
+
+		case 20001:
+			acumPrecio = acumPrecio + 500;
+			break;
+
+		case 20002:
+			acumPrecio = acumPrecio + 400;
+			break;
+
+		case 20003:
+			acumPrecio = acumPrecio + 600;
+			break;
+
+		}
+
+	}
+
+	if(flagError == 0){retorno = 0;}
+
+	printf("\nSerie: %d",ser);
+	printf("\nEl total de reparaciones realizadas al Electrodomestico seleccionado es de $%d\n",acumPrecio);
+	system("pause");
+
+
+
+	return retorno;
+}
+
+int contadorServicio(Reparacion *pArray, Servicio *pServicio, int limite)
+{
+	int retorno = -1;
+	int i;
+	int j;
+
+
+
+	int contadorServicio[limite];
+
+	int max=-1;
+	char desc[26];
+
+
+
+
+	if (pArray != NULL && pServicio != NULL && limite > 0) {
+			for (i = 0; i < 5; i++)
+			{
+				contadorServicio[i]=0;
+			}
+			for (i = 0; i < 5; i++)
+			{
+				for (j = 0; j < limite; j++)
+				{
+					if(pArray[j].idServicio == pServicio[i].id && pArray[j].isEmpty == 0)
+					{
+						contadorServicio[i]++;
+					}
+				}
+			}
+
+			for (i = 0; i < 5; i++)
+			{
+				if(max<contadorServicio[i])
+				{
+					max = contadorServicio[i];
+					strncpy(desc,pServicio[i].servDesc,26);
+				}
+			}
+
+
+
+
+			printf("\nEl servicio mas pedido es %s\n",desc);
+			system("pause");
+
+			retorno = 0;
+
+		}
+
+	return retorno;
+}
+
+int mostrarTrabajosAElectro2018(Reparacion *pArray, Electro *pElectro, Servicio *pServicio, Reparacion *pTrabajosAElectro2018, int limite)
+{
+	int retorno = -1;
+	int i;
+	int idServicio;
+	int idServicioPos;
+
+	mostrarElectroAnioServ(pElectro, pTrabajosAElectro2018, pServicio, limite, 2018);
+
+	printf("\nTrabajos realizados a electrodomesticos modelo 2018: ");
+	for(i=0;i<limite;i++)
+	{
+		idServicio = pTrabajosAElectro2018[i].idServicio;
+		idServicioPos = findServicioById(pServicio, limite, idServicio);
+		printf("\n%s",pServicio[idServicioPos].servDesc);
+
+	}
+
+
+
+
+
+
+	return retorno;
+}
+
+

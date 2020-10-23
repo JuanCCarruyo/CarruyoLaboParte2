@@ -35,6 +35,7 @@ int main(void) {
 	Reparacion arrayRep[MAX];
 	eFecha arrayFecha[MAX];
 	Cliente arrayClientes[MAX];
+	Electro pElectroSinRep[MAX];
 	int contElectro=0;
 	int contRep=0;
 	int contFecha=0;
@@ -60,6 +61,15 @@ int main(void) {
 	int resultadoPrintRep;
 	int resultadoAltaReparacion;
 	int resContadoresClientes;
+	int resMostrarElectro2020;
+	int resultadoInicializar4;
+	int resMostrarElectroMarca;
+	int resultadoInicializar5;
+	int resInforme3;
+	int resMostrarElectroSinRep;
+	int resInformeTotalRep;
+	int resContadorServicio;
+	int resMostrarTrabajosAElectro2018;
 
 	int opcion2;
 	int resultadoMenuInformes;
@@ -69,17 +79,34 @@ int main(void) {
 	int contadorCliente[MAX];
 
 
+
 	int inputID;
 
+	Electro pElectro2020[MAX];
+	Electro pElectroMarca[MAX];
+	Reparacion pRepElec[MAX];
+	Reparacion pInformeTotalRep[MAX];
+	Reparacion pTrabajosAElectro2018[MAX];
+
 	resultadoInicializar = initElectro(arrayElectro, MAX);
+
 	resultadoInicializar2 = initRep(arrayRep, MAX);
 	resultadoInicializar3 = initFecha(arrayFecha, MAX);
+
+	resultadoInicializar4 = initElectro(pElectro2020, MAX);
+	resultadoInicializar5 = initElectro(pElectroMarca, MAX);
+
+	resultadoInicializar5 = initRep(pRepElec, MAX);
+	resultadoInicializar5 = initElectro(pElectroSinRep, MAX);
+	resultadoInicializar5 = initRep(pInformeTotalRep, MAX);
+	resultadoInicializar5 = initRep(pTrabajosAElectro2018, MAX);
+
 	harcodeoClientes(arrayClientes,MAX);
 	harcodeoElectro(arrayElectro,MAX);
 	harcodeoReparacion(arrayRep,MAX);
 
 	do {
-			if (resultadoInicializar == -1 || resultadoInicializar2 == -1 || resultadoInicializar3 == -1) {
+			if (resultadoInicializar == -1 || resultadoInicializar2 == -1 || resultadoInicializar3 == -1 || resultadoInicializar4 == -1 || resultadoInicializar5 == -1) {
 				printf("\nERROR AL INICIALIZAR");
 				system("pause");
 				break;
@@ -293,12 +320,19 @@ int main(void) {
 
 				resultadoMenuInformes = getInt(&opcion2,
 						"Menu de Opciones\n"
-						"1- INFORMAR LA MARCA CON MAS ELECTRODOMESTICOS \n"
-						"2- INFORMAR EL CLIENTE CON MAS REPARACIONES\n"
-						"3- INFORMAR \n"
-						"4- INFORMAR  \n"
-						"5- INFORMAR  \n",
-								"\nError: Seleccione una opcion valida.\n", 1, 5, 3);
+						"1- Mostrar Electrodomesticos del anio(modelo) 2020 \n"
+						"2- Mostrar Electrodomesticos de una marca seleccionada\n"
+						"3- Mostrar todos las reparaciones efectuadas al Electrodoméstico seleccionado \n"
+						"4- Listar los Electrodomésticos que no tuvieron reparaciones  \n"
+						"5- Informar importe total de las reparaciones realizadas a un Electrodoméstico seleccionado  \n"
+						"6- Mostrar el servicio más pedido \n"
+						"7- Mostrar la recaudación en una fecha en particular\n"
+						"8- Mostrar todos los Electrodomésticos que realizaron una garantía y la fecha\n"
+						"9- Trabajos realizados a Electrodomésticos del año(modelo) 2018\n"
+						"10- Facturación total por los mantenimientos\n"
+						"11- Informar la marca con mas Electrodomésticos \n"
+						"12- Informar el cliente con mas reparaciones \n",
+								"\nError: Seleccione una opcion valida.\n", 1, 12, 3);
 
 				if (resultadoMenuInformes != 0) {
 					printf("\nERROR FATAL");
@@ -308,8 +342,77 @@ int main(void) {
 
 				switch(opcion2)
 				{
-
 				case 1:
+
+
+					resMostrarElectro2020 = mostrarElectroAnio(arrayElectro, pElectro2020, marcas, MAX, 2020);
+					if (resMostrarElectro2020 != 0) {
+						printf("\nError mostrando el informe.\n");
+						system("pause");
+					}
+
+					break;
+
+				case 2:
+
+
+					resMostrarElectroMarca = mostrarElectroMarca(arrayElectro, marcas, pElectroMarca, MAX);
+					if (resMostrarElectroMarca != 0) {
+						printf("\nError mostrando el informe.\n");
+						system("pause");
+					}
+
+					break;
+
+				case 3:
+
+					resInforme3 = Informe3(arrayRep, arrayElectro, servicio, arrayClientes, pRepElec, MAX);
+					if (resInforme3 != 0) {
+						printf("\nError mostrando el informe.\n");
+						system("pause");
+					}
+
+					break;
+
+				case 4:
+
+					resMostrarElectroSinRep = mostrarElectroSinRep(arrayElectro, arrayRep, marcas, pElectroSinRep, MAX);
+					if (resMostrarElectroSinRep != 0) {
+						printf("\nError mostrando el informe.\n");
+						system("pause");
+					}
+
+					break;
+
+				case 5:
+
+					resInformeTotalRep = InformeTotalRep(arrayRep, arrayElectro, servicio, pInformeTotalRep, MAX);
+					if (resInformeTotalRep != 0) {
+						printf("\nError mostrando el informe.\n");
+						system("pause");
+					}
+					break;
+
+				case 6:
+
+					 resContadorServicio = contadorServicio(arrayRep, servicio, MAX);
+						if (resContadorServicio != 0) {
+							printf("\nError mostrando el informe.\n");
+							system("pause");
+						}
+						break;
+
+				case 9:
+
+					resMostrarTrabajosAElectro2018 = mostrarTrabajosAElectro2018(arrayRep, arrayElectro, servicio, pTrabajosAElectro2018, MAX);
+					if (resMostrarTrabajosAElectro2018 != 0) {
+						printf("\nError mostrando el informe.\n");
+						system("pause");
+					}
+					break;
+
+
+				case 11:
 
 					resContadoresMarcas = contadoresMarcas(arrayElectro, marcas, MAX, contadorElectro);
 					if (resContadoresMarcas != 0) {
@@ -321,7 +424,7 @@ int main(void) {
 
 					break;
 
-				case 2:
+				case 12:
 
 					resContadoresClientes = contadoresClientes(arrayRep, arrayClientes, MAX, contadorCliente);
 					if (resContadoresClientes != 0) {

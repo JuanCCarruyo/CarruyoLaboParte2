@@ -9,15 +9,9 @@
 #define ELECTRODOMESTICO_H_
 
 #include "marca.h"
+#include "reparacion.h"
 
-typedef struct
-{
-    int id;
-    int serie;
-    int idMarca;
-    int modelo;
-    int isEmpty;
-}Electro;
+
 
 /*
  * \brief Carga de manera automatica algunos electrodomesticos.
@@ -94,6 +88,9 @@ int removeElectro(Electro *pArray, int limite, int id, int *contElectro);
  */
 int findElectroById(Electro *pArray, int limite, int id);
 
+
+int findElectroBySerie(Electro *pArray, int limite, int serie);
+
 /**
  * \brief Busca y modifica los datos del array de electrodomesticos
  *  \param Array de tipo electrodomesticos
@@ -137,5 +134,13 @@ int checkMayorMarca(Electro *pElectro, int limite, int *mayorMarca);
  *  \return	Retorna 0 si realiza las cuentas con exito, -1 si no.
  */
 int contadoresMarcas(Electro *pElectro, Marca *pMarca, int limite, int *contadorElectro);
+
+int mostrarElectroAnio(Electro *pElectro, Electro *pElectro2020, Marca *pMarca, int limite, int anio);
+
+int mostrarElectroAnioServ(Electro *pElectro, Reparacion *pRepAnio, Servicio *pServicio, int limite, int anio);
+
+int mostrarElectroMarca(Electro *pElectro, Marca *pMarca, Electro *pElectroMarca, int limite);
+
+int mostrarElectroSinRep(Electro *pElectro, Reparacion *pRep, Marca *pMarca, Electro *pElectroSinRep, int limite);
 
 #endif /* ELECTRODOMESTICO_H_ */

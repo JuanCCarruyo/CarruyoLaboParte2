@@ -10,8 +10,8 @@
 #include <string.h>
 #include <ctype.h>
 
-#include "electrodomestico.h"
 #include "utnInputs.h"
+#include "electrodomestico.h"
 #include "marca.h"
 
 #define NAMELIMIT 51
@@ -21,9 +21,9 @@ void harcodeoElectro(Electro *pArray,int limite)
 {
 	int i;
 	int id[5]={1,2,3,4,5};
-	int serie[5]={11111,22222,33333,44444,55555};
+	int serie[5]={11111,22222,42003,44444,55555};
 	int idMarca[5]={1000,1001,1001,1003,1004};
-	int modelo[5]={1990,1995,2001,2013,2020};
+	int modelo[5]={1990,2018,2020,2018,2020};
 
 	for (i = 0; i < 5; i++){
 
@@ -190,6 +190,29 @@ int findElectroById(Electro *pArray, int limite, int id) {
 	for (i = 0; i < limite; i++) {
 		if (pArray[i].isEmpty != 1) {
 			if (pArray[i].id == id) {
+				flag = 1;
+				retorno = i;
+				break;
+			}
+		}
+	}}
+
+	if (flag == 0) {
+		retorno = -1;
+	}
+
+	return retorno;
+}
+
+int findElectroBySerie(Electro *pArray, int limite, int serie) {
+	int retorno = -1;
+	int i;
+	int flag = 0;
+
+	if (pArray != NULL && limite > 0){
+	for (i = 0; i < limite; i++) {
+		if (pArray[i].isEmpty != 1) {
+			if (pArray[i].serie == serie) {
 				flag = 1;
 				retorno = i;
 				break;
@@ -379,6 +402,134 @@ int contadoresMarcas(Electro *pElectro, Marca *pMarca, int limite, int *contador
 			retorno = 0;
 
 		}
+
+	return retorno;
+}
+
+int mostrarElectroAnio(Electro *pElectro, Electro *pElectro2020, Marca *pMarca, int limite, int anio)
+{
+	int retorno = -1;
+	int i;
+	int resultadoPrintElectro=0;
+
+		for (i = 0; i < limite; i++)
+		{
+			if(pElectro[i].modelo == anio && pElectro[i].isEmpty == 0)
+			{
+				pElectro2020[i].id = pElectro[i].id;
+				pElectro2020[i].serie = pElectro[i].serie;
+				pElectro2020[i].idMarca = pElectro[i].idMarca;
+				pElectro2020[i].modelo = pElectro[i].modelo;
+				pElectro2020[i].isEmpty = pElectro[i].isEmpty;
+				retorno = 0;
+			}
+		}
+
+		resultadoPrintElectro = printElectro(pElectro2020, pMarca, limite);
+		if (resultadoPrintElectro != 0) {
+			printf("\nError mostrando los electrodomesticos.\n");
+			system("pause");
+		}
+		initElectro(pElectro2020, limite);
+		system("pause");
+
+		return retorno;
+
+}
+
+int mostrarElectroAnioServ(Electro *pElectro, Reparacion *pRepAnio, Servicio *pServicio, int limite, int anio)
+{
+	int retorno = -1;
+	int i;
+
+		for (i = 0; i < limite; i++)
+		{
+			if(pElectro[i].modelo == anio && pElectro[i].isEmpty == 0)
+			{
+				pRepAnio[i].id = pElectro[i].id;
+				pRepAnio[i].serie = pElectro[i].serie;
+				pRepAnio[i].idCliente = pElectro[i].idMarca;
+				pRepAnio[i].idServicio = pElectro[i].modelo;
+				pRepAnio[i].isEmpty = pElectro[i].isEmpty;
+				retorno = 0;
+			}
+		}
+
+		initRep(pRepAnio, limite);
+
+		return retorno;
+
+}
+
+int mostrarElectroMarca(Electro *pElectro, Marca *pMarca, Electro *pElectroMarca, int limite)
+{
+	int retorno = -1;
+	int i;
+	int inputMarca;
+	int resultadoPrintElectro;
+
+
+	getInt(&inputMarca, "\nIngrese el ID de marca: ",
+			"\nERROR: Ingrese un ID valido", 1000, 1004, 10);
+
+	for (i = 0; i < limite; i++)
+	{
+		if(pElectro[i].idMarca == inputMarca && pElectro[i].isEmpty == 0)
+		{
+			pElectroMarca[i].id = pElectro[i].id;
+			pElectroMarca[i].serie = pElectro[i].serie;
+			pElectroMarca[i].idMarca = pElectro[i].idMarca;
+			pElectroMarca[i].modelo = pElectro[i].modelo;
+			pElectroMarca[i].isEmpty = pElectro[i].isEmpty;
+			retorno = 0;
+		}
+	}
+
+	resultadoPrintElectro = printElectro(pElectroMarca, pMarca, limite);
+	if (resultadoPrintElectro != 0) {
+		printf("\nError mostrando los electrodomesticos.\n");
+		system("pause");
+	}
+
+	initElectro(pElectroMarca, MAX);
+	system("pause");
+
+	return retorno;
+}
+
+int mostrarElectroSinRep(Electro *pElectro, Reparacion *pRep, Marca *pMarca, Electro *pElectroSinRep, int limite)
+{
+	int retorno = -1;
+	int i;
+	int resultadoPrintElectro;
+	int respFindElectroBySerie=0;
+
+
+	for (i = 0; i < limite; i++)
+	{
+		respFindElectroBySerie = findElectroBySerie(pElectro, limite, pRep[i].serie);
+		if (respFindElectroBySerie == -1){
+		if(pElectro[i].serie != pRep[i].serie && pElectro[i].isEmpty == 0)
+		{
+			pElectroSinRep[i].id = pElectro[i].id;
+			pElectroSinRep[i].serie = pElectro[i].serie;
+			pElectroSinRep[i].idMarca = pElectro[i].idMarca;
+			pElectroSinRep[i].modelo = pElectro[i].modelo;
+			pElectroSinRep[i].isEmpty = pElectro[i].isEmpty;
+			retorno = 0;
+		}
+		}
+	}
+
+	resultadoPrintElectro = printElectro(pElectroSinRep, pMarca, limite);
+	if (resultadoPrintElectro != 0) {
+		printf("\nError mostrando los electrodomesticos.\n");
+		system("pause");
+	}
+
+	initElectro(pElectroSinRep, MAX);
+	system("pause");
+
 
 	return retorno;
 }
