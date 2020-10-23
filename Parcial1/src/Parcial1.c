@@ -183,6 +183,7 @@ int main(void) {
 				else
 				{
 					printf("\nDebe cargar algun electrodomestico antes de Modificar. \n");
+					system("pause");
 				}
 
 				break;
@@ -220,6 +221,7 @@ int main(void) {
 				else
 				{
 					printf("\nDebe cargar algun electrodomestico antes de Bajar. \n");
+					system("pause");
 				}
 
 				break;
