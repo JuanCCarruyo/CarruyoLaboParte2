@@ -84,6 +84,7 @@ int main(void) {
 
 	Electro pElectro2020[MAX];
 	Electro pElectroMarca[MAX];
+
 	Reparacion pRepElec[MAX];
 	Reparacion pInformeTotalRep[MAX];
 	Reparacion pTrabajosAElectro2018[MAX];
@@ -101,7 +102,7 @@ int main(void) {
 	resultadoInicializar5 = initRep(pInformeTotalRep, MAX);
 	resultadoInicializar5 = initRep(pTrabajosAElectro2018, MAX);
 
-//	harcodeoClientes(arrayClientes,MAX);
+	harcodeoClientes(arrayClientes,MAX);
 //	harcodeoElectro(arrayElectro,MAX);
 //	harcodeoReparacion(arrayRep,MAX);
 
