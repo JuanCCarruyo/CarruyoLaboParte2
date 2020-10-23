@@ -46,8 +46,8 @@ int main(void) {
 	int resultadoInicializar3;
 	int resultadoMenu;
 	int resultadoCargaElectro;
-	int flagAltaElectro=1;
-	int flagAltaReparacion=1;
+	int flagAltaElectro=0;
+	int flagAltaReparacion=0;
 	int resultadoBajaElectro;
 	int resultadoFindElectroById;
 	int resultadoRemoveElectro;
@@ -101,9 +101,9 @@ int main(void) {
 	resultadoInicializar5 = initRep(pInformeTotalRep, MAX);
 	resultadoInicializar5 = initRep(pTrabajosAElectro2018, MAX);
 
-	harcodeoClientes(arrayClientes,MAX);
-	harcodeoElectro(arrayElectro,MAX);
-	harcodeoReparacion(arrayRep,MAX);
+//	harcodeoClientes(arrayClientes,MAX);
+//	harcodeoElectro(arrayElectro,MAX);
+//	harcodeoReparacion(arrayRep,MAX);
 
 	do {
 			if (resultadoInicializar == -1 || resultadoInicializar2 == -1 || resultadoInicializar3 == -1 || resultadoInicializar4 == -1 || resultadoInicializar5 == -1) {
